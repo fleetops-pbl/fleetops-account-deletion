@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hapus Akun – FleetOps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #1A6BFF;
+      --blue-dark:  #0F4FCC;
+      --blue-light: #EEF4FF;
+      --red:        #EF4444;
+      --red-light:  #FFF1F1;
+      --green:      #22C55E;
+      --green-light:#F0FDF4;
+      --text:       #0F172A;
+      --muted:      #64748B;
+      --border:     #E2E8F0;
+      --bg:         #F8FAFC;
+      --white:      #FFFFFF;
+      --radius:     14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 8px rgba(0,0,0,.06);
+    }
+    .header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 64px;
+    }
+
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1A6BFF 0%, #0F4FCC 100%);
+      padding: 56px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+      font-size: 12px; font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      letter-spacing: .3px;
+      position: relative;
+    }
+    .hero-badge svg { width: 13px; height: 13px; fill: #fff; }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 36px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.5px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .hero p {
+      font-size: 15px;
+      color: rgba(255,255,255,.8);
+      max-width: 480px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      animation: fadeUp .5s ease both;
+    }
+    .card:nth-child(1) { animation-delay: .05s; }
+    .card:nth-child(2) { animation-delay: .10s; }
+    .card:nth-child(3) { animation-delay: .15s; }
+    .card:nth-child(4) { animation-delay: .20s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 16px; font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .card-title .icon {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-blue  { background: var(--blue-light); color: var(--blue); }
+    .icon-red   { background: var(--red-light);  color: var(--red);  }
+    .icon-green { background: var(--green-light); color: var(--green);}
+
+    /* ── DATA TABLE ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .data-table th {
+      background: var(--bg);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-red   { background: var(--red-light);  color: var(--red);  }
+    .badge-green { background: var(--green-light); color: var(--green);}
+
+    /* ── STEPS ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 16px;
+      position: relative;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 17px; top: 40px;
+      width: 2px;
+      height: calc(100% - 20px);
+      background: var(--border);
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      position: relative;
+      z-index: 1;
+    }
+    .step-body { padding-bottom: 24px; flex: 1; }
+    .step:last-child .step-body { padding-bottom: 0; }
+    .step-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── EMAIL BLOCK ── */
+    .email-block {
+      background: var(--blue-light);
+      border: 1px solid rgba(26,107,255,.2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .email-block svg { width: 20px; height: 20px; color: var(--blue); flex-shrink: 0; }
+    .email-block a {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+    }
+    .email-block a:hover { text-decoration: underline; }
+    .email-block span { font-size: 13px; color: var(--muted); display: block; margin-top: 1px; }
+
+    /* ── RETENTION NOTICE ── */
+    .retention-notice {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+      color: #92400E;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .retention-notice svg { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── WARNING CARD ── */
+    .warning-card {
+      background: var(--red-light);
+      border: 1px solid rgba(239,68,68,.2);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      color: #991B1B;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .warning-card svg { flex-shrink: 0; margin-top: 2px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+    footer strong { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .card { padding: 20px; }
+      .hero { padding: 40px 20px 36px; }
+      .data-table th, .data-table td { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <img src="data:image/png;base64,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" alt="FleetOps" style="height:28px; width:auto; display:block;" />
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Privasi & Keamanan Data
+    </div>
+    <h1>Permintaan Penghapusan Akun</h1>
+    <p>Halaman ini menjelaskan cara meminta penghapusan akun dan data Anda di aplikasi FleetOps.</p>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- 1. Data yang dikumpulkan -->
+    <div class="card">
+      <div class="card-title">
+        <div class="icon icon-blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+          </svg>
+        </div>
+        Data yang Kami Kumpulkan
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Jenis Data</th>
+            <th>Keperluan</th>
+            <th>Saat Dihapus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nama</strong></td>
+            <td>Identifikasi akun pengguna</td>
+            <td><span class="badge badge-red">Langsung dihapus</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kata Sandi</strong></td>
+            <td>Autentikasi login akun</td>
+            <td><span class="badge badge-red">Langsung dihapus</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="retention-notice">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92400E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+        </svg>
+        Setelah permintaan penghapusan disetujui, seluruh data akun Anda akan dihapus secara permanen dari sistem kami dalam waktu <strong>&nbsp;30 hari kerja</strong>. Data tidak dapat dipulihkan kembali setelah dihapus.
+      </div>
+    </div>
+
+    <!-- 2. Langkah hapus akun -->
+    <div class="card">
+      <div class="card-title">
+        <div class="icon icon-blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        Cara Meminta Penghapusan Akun
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Buka aplikasi email Anda</strong>
+            <p>Gunakan aplikasi email yang terdaftar di akun FleetOps Anda.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Kirim email ke alamat berikut</strong>
+            <p>Tuliskan subjek email: <strong>"Permintaan Hapus Akun FleetOps"</strong></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Sertakan informasi berikut dalam isi email</strong>
+            <p>• Nama lengkap yang terdaftar di akun<br>• Pernyataan bahwa Anda ingin menghapus akun secara permanen</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Tunggu konfirmasi dari tim kami</strong>
+            <p>Tim FleetOps akan memproses permintaan Anda dan mengirimkan konfirmasi dalam <strong>1–3 hari kerja</strong>. Penghapusan data selesai dalam <strong>30 hari kerja</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="email-block">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blue)">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <div>
+          <a href="mailto:fle3tops@gmail.com?subject=Permintaan%20Hapus%20Akun%20FleetOps">fle3tops@gmail.com</a>
+          <span>Klik untuk langsung membuka email</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Yang terjadi setelah dihapus -->
+    <div class="card">
+      <div class="card-title">
+        <div class="icon icon-red">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+        </div>
+        Yang Terjadi Setelah Akun Dihapus
+      </div>
+      <div class="warning-card">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#991B1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <div>
+          <strong>Perhatian:</strong> Penghapusan akun bersifat permanen dan tidak dapat dibatalkan. Setelah akun dihapus, seluruh data Anda tidak dapat dipulihkan. Pastikan Anda sudah tidak membutuhkan akses ke aplikasi FleetOps sebelum mengajukan permintaan.
+        </div>
+      </div>
+      <table class="data-table" style="margin-top:16px">
+        <thead>
+          <tr>
+            <th>Hal yang Terjadi</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Akun tidak bisa diakses</td>
+            <td>Login dengan akun tersebut tidak akan berfungsi</td>
+          </tr>
+          <tr>
+            <td>Nama & kata sandi dihapus</td>
+            <td>Dihapus permanen dari database FleetOps</td>
+          </tr>
+          <tr>
+            <td>Tidak ada pemulihan data</td>
+            <td>Data tidak dapat dikembalikan setelah dihapus</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. Kontak -->
+    <div class="card">
+      <div class="card-title">
+        <div class="icon icon-green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.49 2 2 0 0 1 3.55 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.82-.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+          </svg>
+        </div>
+        Butuh Bantuan?
+      </div>
+      <p style="font-size:14px; color:var(--muted); margin-bottom:14px;">
+        Jika Anda memiliki pertanyaan tentang proses penghapusan akun atau privasi data, jangan ragu untuk menghubungi tim FleetOps.
+      </p>
+      <div class="email-block">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blue)">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <div>
+          <a href="mailto:fle3tops@gmail.com">fle3tops@gmail.com</a>
+          <span>Respons dalam 1–3 hari kerja</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 <strong>FleetOps</strong>. Semua hak dilindungi.</p>
+    <p style="margin-top:6px">Halaman ini dibuat untuk memenuhi kebijakan Google Play Store terkait penghapusan akun pengguna.</p>
+  </footer>
+
+</body>
+</html>
